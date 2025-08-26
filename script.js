@@ -4,6 +4,7 @@ const checkbtn = document.getElementById('checkbtn')
       const score = document.getElementById('score')
       const nextbtn = document.getElementById('btn')
       const footer = document.querySelector('.footer')
+      let timer;
 
       const quizData = [
   {
@@ -126,6 +127,9 @@ const checkbtn = document.getElementById('checkbtn')
       optionsEls.forEach(function(opt){
         opt.classList.remove('correct', 'selected', 'wrong')
       })
+
+      clearInterval(timer)
+      startTimer()
       
     }
     loadQuestion()
@@ -168,11 +172,13 @@ const checkbtn = document.getElementById('checkbtn')
         reset.classList.add('btn') 
         reset.textContent = 'Reset Quiz'
         footer.appendChild(reset)
-        reset.addEventListener('click', resetQuiz)   
+        reset.addEventListener('click', resetQuiz) 
+        document.querySelector('.timer').innerHTML = ''  
       }
     }
 
     function checkAnswer(){
+      clearInterval(timer)
       var selectedOption = null
       optionsEls.forEach(function(opt, i){
         if(opt.classList.contains('selected')){
@@ -221,6 +227,21 @@ const checkbtn = document.getElementById('checkbtn')
 
 
       loadQuestion()
+    }
+
+    function startTimer(){
+      var timeLeft = 10
+      document.querySelector('.timer').textContent = `Time Left: ${timeLeft}`
+
+      timer = setInterval(function(){
+        timeLeft--
+        document.querySelector('.timer').textContent = `Time Left: ${timeLeft}`
+
+        if(timeLeft <= 0){
+          clearInterval(timer)
+          nextQuestion()
+        }
+      },1000)
     }
 
 
